@@ -25,15 +25,24 @@ public class Philosopher
         while (running) {
             try {
                 think();
-                myLeftStick.take();
-                // think(); // Pour augmenter la probabilité d'interblocage
-                myRightStick.take();
-                // success : process
-                eat();
-                // release resources
-                myLeftStick.release();
-                myRightStick.release();
-                // try again
+                /*if (myLeftStick.tryTake()){
+                    if(myRightStick.tryTake()){
+                        // success : process
+                        eat();
+                        // release resources
+                        myLeftStick.release();
+                        myRightStick.release();
+                    }
+                }*/
+                if (myLeftStick.newTake()){
+                    if(myRightStick.newTake()){
+                        // success : process
+                        eat();
+                        // release resources
+                        myLeftStick.newRelease();
+                        myRightStick.newRelease();
+                    }
+                }
             } catch (InterruptedException ex) {
                 Logger.getLogger("Table").log(Level.SEVERE, "{0} Interrupted", this.getName());
             }
